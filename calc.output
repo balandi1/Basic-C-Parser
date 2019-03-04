@@ -1,0 +1,427 @@
+Terminals unused in grammar
+
+   TOK_NUM
+   TOK_ACCESS_SPECIFIER
+   TOK_TYPE_QUALIFIER
+
+
+Grammar
+
+    0 $accept: FunctionDefinition $end
+
+    1 FunctionDefinition: FunctionName TOK_CUR_OPEN VariableDefs Statements TOK_CUR_CLOSE
+
+    2 FunctionName: TOK_FUNC_STRING TOK_OPEN_BRAC TOK_CLOSE_BRAC
+
+    3 VariableDefs: %empty
+    4             | VariableDef VariableDefs
+
+    5 VariableDef: TOK_INT TOK_IDENTIFIER TOK_SEMICOLON
+    6            | TOK_FLOAT TOK_IDENTIFIER TOK_SEMICOLON
+
+    7 Statements: %empty
+    8           | Statement Statements
+
+    9 Statement: TOK_IDENTIFIER TOK_EQUAL Exp TOK_SEMICOLON
+   10          | TOK_PRINTID Exp TOK_SEMICOLON
+   11          | TOK_PRINTEXP Exp TOK_SEMICOLON
+
+   12 Exp: Exp TOK_MUL Exp
+   13    | Exp TOK_SUB Exp
+   14    | NumberConstant
+   15    | TOK_IDENTIFIER
+
+   16 NumberConstant: TOK_INT_CONST
+   17               | TOK_FLOAT_CONST
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+TOK_SEMICOLON (258) 5 6 9 10 11
+TOK_SUB (259) 13
+TOK_MUL (260) 12
+TOK_NUM (261)
+TOK_PRINTID (262) 10
+TOK_PRINTEXP (263) 11
+TOK_INT (264) 5
+TOK_FLOAT (265) 6
+TOK_IDENTIFIER (266) 5 6 9 15
+TOK_EQUAL (267) 9
+TOK_ACCESS_SPECIFIER (268)
+TOK_TYPE_QUALIFIER (269)
+TOK_FUNC_STRING (270) 2
+TOK_OPEN_BRAC (271) 2
+TOK_CLOSE_BRAC (272) 2
+TOK_CUR_OPEN (273) 1
+TOK_CUR_CLOSE (274) 1
+TOK_FLOAT_CONST (275) 17
+TOK_INT_CONST (276) 16
+
+
+Nonterminals, with rules where they appear
+
+$accept (22)
+    on left: 0
+FunctionDefinition (23)
+    on left: 1, on right: 0
+FunctionName (24)
+    on left: 2, on right: 1
+VariableDefs (25)
+    on left: 3 4, on right: 1 4
+VariableDef (26)
+    on left: 5 6, on right: 4
+Statements (27)
+    on left: 7 8, on right: 1 8
+Statement (28)
+    on left: 9 10 11, on right: 8
+Exp (29)
+    on left: 12 13 14 15, on right: 9 10 11 12 13
+NumberConstant (30)
+    on left: 16 17, on right: 14
+
+
+State 0
+
+    0 $accept: . FunctionDefinition $end
+
+    TOK_FUNC_STRING  shift, and go to state 1
+
+    FunctionDefinition  go to state 2
+    FunctionName        go to state 3
+
+
+State 1
+
+    2 FunctionName: TOK_FUNC_STRING . TOK_OPEN_BRAC TOK_CLOSE_BRAC
+
+    TOK_OPEN_BRAC  shift, and go to state 4
+
+
+State 2
+
+    0 $accept: FunctionDefinition . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    1 FunctionDefinition: FunctionName . TOK_CUR_OPEN VariableDefs Statements TOK_CUR_CLOSE
+
+    TOK_CUR_OPEN  shift, and go to state 6
+
+
+State 4
+
+    2 FunctionName: TOK_FUNC_STRING TOK_OPEN_BRAC . TOK_CLOSE_BRAC
+
+    TOK_CLOSE_BRAC  shift, and go to state 7
+
+
+State 5
+
+    0 $accept: FunctionDefinition $end .
+
+    $default  accept
+
+
+State 6
+
+    1 FunctionDefinition: FunctionName TOK_CUR_OPEN . VariableDefs Statements TOK_CUR_CLOSE
+
+    TOK_INT    shift, and go to state 8
+    TOK_FLOAT  shift, and go to state 9
+
+    $default  reduce using rule 3 (VariableDefs)
+
+    VariableDefs  go to state 10
+    VariableDef   go to state 11
+
+
+State 7
+
+    2 FunctionName: TOK_FUNC_STRING TOK_OPEN_BRAC TOK_CLOSE_BRAC .
+
+    $default  reduce using rule 2 (FunctionName)
+
+
+State 8
+
+    5 VariableDef: TOK_INT . TOK_IDENTIFIER TOK_SEMICOLON
+
+    TOK_IDENTIFIER  shift, and go to state 12
+
+
+State 9
+
+    6 VariableDef: TOK_FLOAT . TOK_IDENTIFIER TOK_SEMICOLON
+
+    TOK_IDENTIFIER  shift, and go to state 13
+
+
+State 10
+
+    1 FunctionDefinition: FunctionName TOK_CUR_OPEN VariableDefs . Statements TOK_CUR_CLOSE
+
+    TOK_PRINTID     shift, and go to state 14
+    TOK_PRINTEXP    shift, and go to state 15
+    TOK_IDENTIFIER  shift, and go to state 16
+
+    $default  reduce using rule 7 (Statements)
+
+    Statements  go to state 17
+    Statement   go to state 18
+
+
+State 11
+
+    4 VariableDefs: VariableDef . VariableDefs
+
+    TOK_INT    shift, and go to state 8
+    TOK_FLOAT  shift, and go to state 9
+
+    $default  reduce using rule 3 (VariableDefs)
+
+    VariableDefs  go to state 19
+    VariableDef   go to state 11
+
+
+State 12
+
+    5 VariableDef: TOK_INT TOK_IDENTIFIER . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 20
+
+
+State 13
+
+    6 VariableDef: TOK_FLOAT TOK_IDENTIFIER . TOK_SEMICOLON
+
+    TOK_SEMICOLON  shift, and go to state 21
+
+
+State 14
+
+   10 Statement: TOK_PRINTID . Exp TOK_SEMICOLON
+
+    TOK_IDENTIFIER   shift, and go to state 22
+    TOK_FLOAT_CONST  shift, and go to state 23
+    TOK_INT_CONST    shift, and go to state 24
+
+    Exp             go to state 25
+    NumberConstant  go to state 26
+
+
+State 15
+
+   11 Statement: TOK_PRINTEXP . Exp TOK_SEMICOLON
+
+    TOK_IDENTIFIER   shift, and go to state 22
+    TOK_FLOAT_CONST  shift, and go to state 23
+    TOK_INT_CONST    shift, and go to state 24
+
+    Exp             go to state 27
+    NumberConstant  go to state 26
+
+
+State 16
+
+    9 Statement: TOK_IDENTIFIER . TOK_EQUAL Exp TOK_SEMICOLON
+
+    TOK_EQUAL  shift, and go to state 28
+
+
+State 17
+
+    1 FunctionDefinition: FunctionName TOK_CUR_OPEN VariableDefs Statements . TOK_CUR_CLOSE
+
+    TOK_CUR_CLOSE  shift, and go to state 29
+
+
+State 18
+
+    8 Statements: Statement . Statements
+
+    TOK_PRINTID     shift, and go to state 14
+    TOK_PRINTEXP    shift, and go to state 15
+    TOK_IDENTIFIER  shift, and go to state 16
+
+    $default  reduce using rule 7 (Statements)
+
+    Statements  go to state 30
+    Statement   go to state 18
+
+
+State 19
+
+    4 VariableDefs: VariableDef VariableDefs .
+
+    $default  reduce using rule 4 (VariableDefs)
+
+
+State 20
+
+    5 VariableDef: TOK_INT TOK_IDENTIFIER TOK_SEMICOLON .
+
+    $default  reduce using rule 5 (VariableDef)
+
+
+State 21
+
+    6 VariableDef: TOK_FLOAT TOK_IDENTIFIER TOK_SEMICOLON .
+
+    $default  reduce using rule 6 (VariableDef)
+
+
+State 22
+
+   15 Exp: TOK_IDENTIFIER .
+
+    $default  reduce using rule 15 (Exp)
+
+
+State 23
+
+   17 NumberConstant: TOK_FLOAT_CONST .
+
+    $default  reduce using rule 17 (NumberConstant)
+
+
+State 24
+
+   16 NumberConstant: TOK_INT_CONST .
+
+    $default  reduce using rule 16 (NumberConstant)
+
+
+State 25
+
+   10 Statement: TOK_PRINTID Exp . TOK_SEMICOLON
+   12 Exp: Exp . TOK_MUL Exp
+   13    | Exp . TOK_SUB Exp
+
+    TOK_SEMICOLON  shift, and go to state 31
+    TOK_SUB        shift, and go to state 32
+    TOK_MUL        shift, and go to state 33
+
+
+State 26
+
+   14 Exp: NumberConstant .
+
+    $default  reduce using rule 14 (Exp)
+
+
+State 27
+
+   11 Statement: TOK_PRINTEXP Exp . TOK_SEMICOLON
+   12 Exp: Exp . TOK_MUL Exp
+   13    | Exp . TOK_SUB Exp
+
+    TOK_SEMICOLON  shift, and go to state 34
+    TOK_SUB        shift, and go to state 32
+    TOK_MUL        shift, and go to state 33
+
+
+State 28
+
+    9 Statement: TOK_IDENTIFIER TOK_EQUAL . Exp TOK_SEMICOLON
+
+    TOK_IDENTIFIER   shift, and go to state 22
+    TOK_FLOAT_CONST  shift, and go to state 23
+    TOK_INT_CONST    shift, and go to state 24
+
+    Exp             go to state 35
+    NumberConstant  go to state 26
+
+
+State 29
+
+    1 FunctionDefinition: FunctionName TOK_CUR_OPEN VariableDefs Statements TOK_CUR_CLOSE .
+
+    $default  reduce using rule 1 (FunctionDefinition)
+
+
+State 30
+
+    8 Statements: Statement Statements .
+
+    $default  reduce using rule 8 (Statements)
+
+
+State 31
+
+   10 Statement: TOK_PRINTID Exp TOK_SEMICOLON .
+
+    $default  reduce using rule 10 (Statement)
+
+
+State 32
+
+   13 Exp: Exp TOK_SUB . Exp
+
+    TOK_IDENTIFIER   shift, and go to state 22
+    TOK_FLOAT_CONST  shift, and go to state 23
+    TOK_INT_CONST    shift, and go to state 24
+
+    Exp             go to state 36
+    NumberConstant  go to state 26
+
+
+State 33
+
+   12 Exp: Exp TOK_MUL . Exp
+
+    TOK_IDENTIFIER   shift, and go to state 22
+    TOK_FLOAT_CONST  shift, and go to state 23
+    TOK_INT_CONST    shift, and go to state 24
+
+    Exp             go to state 37
+    NumberConstant  go to state 26
+
+
+State 34
+
+   11 Statement: TOK_PRINTEXP Exp TOK_SEMICOLON .
+
+    $default  reduce using rule 11 (Statement)
+
+
+State 35
+
+    9 Statement: TOK_IDENTIFIER TOK_EQUAL Exp . TOK_SEMICOLON
+   12 Exp: Exp . TOK_MUL Exp
+   13    | Exp . TOK_SUB Exp
+
+    TOK_SEMICOLON  shift, and go to state 38
+    TOK_SUB        shift, and go to state 32
+    TOK_MUL        shift, and go to state 33
+
+
+State 36
+
+   12 Exp: Exp . TOK_MUL Exp
+   13    | Exp . TOK_SUB Exp
+   13    | Exp TOK_SUB Exp .
+
+    TOK_MUL  shift, and go to state 33
+
+    $default  reduce using rule 13 (Exp)
+
+
+State 37
+
+   12 Exp: Exp . TOK_MUL Exp
+   12    | Exp TOK_MUL Exp .
+   13    | Exp . TOK_SUB Exp
+
+    $default  reduce using rule 12 (Exp)
+
+
+State 38
+
+    9 Statement: TOK_IDENTIFIER TOK_EQUAL Exp TOK_SEMICOLON .
+
+    $default  reduce using rule 9 (Statement)
